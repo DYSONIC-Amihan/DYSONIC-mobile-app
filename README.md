@@ -2,6 +2,18 @@
 
 A new Flutter project.
 
+## Before You Start Coding
+
+Before creating or editing any code, run these two commands from the project root (the folder with `pubspec.yaml`):
+
+```bash
+git pull
+flutter pub get
+```
+
+- `git pull` makes sure you have the latest changes from the team.
+- `flutter pub get` installs the latest packages, so imports like `package:flutter/material.dart` and `package:shadcn_ui/shadcn_ui.dart` resolve correctly.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
