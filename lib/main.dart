@@ -1,16 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart' show LucideIcons;
 
-import 'widgets/app_button.dart';
-import 'widgets/app_card.dart';
-import 'widgets/app_form.dart';
-import 'widgets/app_header.dart';
-import 'widgets/app_icon.dart';
-import 'widgets/app_text.dart';
-import 'widgets/input_box.dart';
-import 'widgets/nav_bar.dart';
-import 'widgets/placeholder_card.dart';
-
 void main() {
   runApp(const MyApp());
 }
