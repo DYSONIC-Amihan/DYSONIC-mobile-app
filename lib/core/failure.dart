@@ -1,31 +1,40 @@
-sealed class Failure {
-  const Failure(this.message);
+// lib/core/failure.dart
+abstract class Failure implements Exception {
+  const Failure(this.message, {this.code});
   final String message;
+  final String? code;
+
+  @override
+  String toString() => message;
 }
 
-final class NetworkFailure extends Failure {
-  const NetworkFailure([super.message = 'No internet connection.']);
+class NetworkFailure extends Failure {
+  const NetworkFailure([super.message = 'Cannot reach the server. Check your connection.'])
+      : super(code: 'network');
 }
 
-final class UnauthorizedFailure extends Failure {
-  const UnauthorizedFailure([super.message = 'Invalid credentials.']);
+class UnauthorizedFailure extends Failure {
+  const UnauthorizedFailure([super.message = 'Invalid credentials or session expired.'])
+      : super(code: 'unauthorized');
 }
 
-final class ValidationFailure extends Failure {
-  const ValidationFailure(super.message);
+class ForbiddenFailure extends Failure {
+  const ForbiddenFailure([super.message = 'You do not have access to this.'])
+      : super(code: 'forbidden');
+}
+
+class ValidationFailure extends Failure {
+  const ValidationFailure([super.message = 'Please check your input.'])
+      : super(code: 'validation');
+}
+
+class UnknownFailure extends Failure {
+  const UnknownFailure([super.message = 'Something went wrong. Please try again.'])
+      : super(code: 'unknown');
 }
 
 final class ServerFailure extends Failure {
   const ServerFailure([super.message = 'Something went wrong. Try again.']);
-}
-
-final class CancelledFailure extends Failure {
-  const CancelledFailure([super.message = 'Cancelled.']);
-}
-
-final class ForbiddenFailure extends Failure {
-  const ForbiddenFailure(
-      [super.message = 'You do not have access to this app.']);
 }
 
 final class EmailNotVerifiedFailure extends Failure {
