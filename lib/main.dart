@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'providers/setting_provider.dart';
 import 'router/app_router.dart';
+import 'theme/app_theme.dart';
 
-void main() {
-  runApp(const ProviderScope(child: DysonicApp()));
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+
+  runApp(
+    ProviderScope(
+      overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
+      child: const DysonicApp(),
+    ),
+  );
 }
 
 class DysonicApp extends ConsumerWidget {
@@ -14,13 +25,12 @@ class DysonicApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
+    final settings = ref.watch(settingsProvider);
 
     return ShadApp.custom(
-      themeMode: ThemeMode.dark,
-      darkTheme: ShadThemeData(
-        brightness: Brightness.dark,
-        colorScheme: const ShadSlateColorScheme.dark(),
-      ),
+      themeMode: settings.themeMode,
+      theme: AppTheme.light(settings.palette),
+      darkTheme: AppTheme.dark(settings.palette),
       appBuilder: (context) => MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: 'DYSONIC',

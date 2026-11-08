@@ -7,6 +7,7 @@ import '../screens/auth/forgot_password_screen.dart';
 import '../screens/auth/login_screen.dart';
 import '../screens/auth/sign_up_screen.dart';
 import '../screens/home/home_screen.dart';
+import '../screens/settings/setting_screen.dart';
 import 'app_routes.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -27,6 +28,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: AppRoutes.home, builder: (_, _) => const HomeScreen()),
       GoRoute(path: AppRoutes.login, builder: (_, _) => const LoginScreen()),
       GoRoute(path: AppRoutes.signUp, builder: (_, _) => const SignUpScreen()),
+      GoRoute(path: AppRoutes.settings, builder: (_, _) => const SettingsScreen()),
       GoRoute(
         path: AppRoutes.forgotPassword,
         builder: (_, _) => const ForgotPasswordScreen(),

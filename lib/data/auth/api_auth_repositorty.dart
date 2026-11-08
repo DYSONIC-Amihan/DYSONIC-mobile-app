@@ -3,29 +3,61 @@ import 'package:dio/dio.dart';
 import '../../core/failure.dart';
 import '../../core/token_storage.dart';
 import '../../core/util/result.dart';
+import '../../services/auth_services.dart';
 import 'auth_repository.dart';
 import 'auth_user.dart';
 
 class ApiAuthRepository implements AuthRepository {
-  ApiAuthRepository(this._dio, this._tokenStorage);
+  ApiAuthRepository(this._dio, this._tokenStorage, this._google);
 
   final Dio _dio;
   final TokenStorage _tokenStorage;
+  final GoogleAuthService _google;
 
   @override
   Future<Result<AuthSession>> signInWithEmail({
     required String email,
     required String password,
-  }) async {
-    try {
-      final res = await _dio.post<Map<String, dynamic>>(
+  }) =>
+      _signIn(
         '/api/auth/sign-in/email',
-        data: {'email': email, 'password': password},
+        {'email': email, 'password': password},
       );
+
+  @override
+Future<Result<AuthSession>> signInWithGoogle() async {
+  try {
+    final idToken = await _google.getIdToken();
+    return await _signIn('/api/auth/sign-in/social', {
+      'provider': 'google',
+      'idToken': {'token': idToken},
+    });
+  } on Failure catch (f) {
+    return Err(f);
+  } catch (_) {
+    return const Err(ServerFailure());
+  }
+}
+  /// Shared by email and Google sign-in: both return {user, token?} and the
+  /// bearer plugin also sends the token in the `set-auth-token` header.
+  Future<Result<AuthSession>> _signIn(
+    String path,
+    Map<String, dynamic> data,
+  ) async {
+    try {
+      final res = await _dio.post<Map<String, dynamic>>(path, data: data);
       final body = res.data!;
       final user = body['user'] as Map<String, dynamic>;
+
+      final token =
+          res.headers.value('set-auth-token') ?? body['token'] as String?;
+      if (token == null) return const Err(ServerFailure());
+
       final role = UserRole.fromId((user['roleId'] as num?)?.toInt());
       if (role == null) return const Err(ForbiddenFailure());
+
+      await _tokenStorage.save(accessToken: token);
+
       return Success(
         AuthSession(
           user: AuthUser(
@@ -35,7 +67,7 @@ class ApiAuthRepository implements AuthRepository {
             role: role,
             emailVerified: user['emailVerified'] as bool? ?? false,
           ),
-          accessToken: body['token'] as String,
+          accessToken: token,
         ),
       );
     } on DioException catch (e) {
@@ -62,10 +94,6 @@ class ApiAuthRepository implements AuthRepository {
       _post('/api/auth/send-verification-email', {'email': email});
 
   @override
-  Future<Result<AuthSession>> signInWithGoogle() async =>
-      const Err(ServerFailure('Google sign-in is not available yet.'));
-
-  @override
   Future<Result<void>> sendPasswordReset({required String email}) =>
       _post('/api/auth/request-password-reset', {'email': email});
 
@@ -74,6 +102,7 @@ class ApiAuthRepository implements AuthRepository {
     try {
       await _dio.post<void>('/api/auth/sign-out');
     } on DioException catch (_) {}
+    await _google.signOut();
     await _tokenStorage.clear();
     return const Success(null);
   }
