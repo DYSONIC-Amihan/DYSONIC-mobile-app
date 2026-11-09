@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../../core/failure.dart';
 import '../../core/token_storage.dart';
+import '../../core/dio_failure_mapper.dart';
 import '../../core/util/result.dart';
 import '../../services/auth_services.dart';
 import 'auth_repository.dart';
@@ -118,22 +119,5 @@ Future<Result<AuthSession>> signInWithGoogle() async {
     }
   }
 
-  Failure _mapError(DioException e) {
-    final status = e.response?.statusCode;
-    final data = e.response?.data;
-    final code = data is Map ? data['code'] as String? : null;
-    final message = data is Map ? data['message'] as String? : null;
-
-    if (status == null) return const NetworkFailure();
-    if (status == 401) return const UnauthorizedFailure();
-    if (status == 403) {
-      return code == 'EMAIL_NOT_VERIFIED'
-          ? const EmailNotVerifiedFailure()
-          : const ForbiddenFailure();
-    }
-    if (status == 400 || status == 422) {
-      return ValidationFailure(message ?? 'Invalid request.');
-    }
-    return const ServerFailure();
-  }
+  Failure _mapError(DioException e) => mapDioError(e);
 }

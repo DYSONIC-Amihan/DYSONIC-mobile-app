@@ -29,16 +29,14 @@ const navDestinations = <NavDestination>[
     icon: LucideIcons.house,
     route: AppRoutes.home,
   ),
-    NavDestination(
+  NavDestination(
+    label: 'Account',
+    icon: LucideIcons.user,
+    route: AppRoutes.account,
+  ),
+  NavDestination(
     label: 'Settings',
     icon: LucideIcons.settings,
     route: AppRoutes.settings,
   ),
-  // Later, for example:
-  // NavDestination(
-  //   label: 'Devices',
-  //   icon: LucideIcons.cpu,
-  //   route: AppRoutes.devices,
-  //   roles: {UserRole.normal},
-  // ),
 ];

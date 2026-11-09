@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../screens/account/account_screen.dart';
 import '../providers/session_provider.dart';
 import '../screens/auth/forgot_password_screen.dart';
 import '../screens/auth/login_screen.dart';
@@ -33,6 +34,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.forgotPassword,
         builder: (_, _) => const ForgotPasswordScreen(),
       ),
+      GoRoute(path: AppRoutes.account, builder: (_, _) => const AccountScreen()),
     ],
   );
 
