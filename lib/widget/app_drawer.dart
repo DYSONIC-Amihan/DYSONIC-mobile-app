@@ -5,6 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../providers/session_provider.dart';
 import '../router/nav_destinations.dart';
+import '../widget/user_avatar.dart';
 
 class AppDrawer extends ConsumerWidget {
   const AppDrawer({super.key});
@@ -16,8 +17,9 @@ class AppDrawer extends ConsumerWidget {
 
     final theme = ShadTheme.of(context);
     final currentRoute = GoRouterState.of(context).matchedLocation;
-    final visibleDestinations =
-        navDestinations.where((d) => d.isVisibleFor(user.role));
+    final visibleDestinations = navDestinations.where(
+      (d) => d.isVisibleFor(user.role),
+    );
 
     return Drawer(
       backgroundColor: theme.colorScheme.background,
@@ -31,10 +33,35 @@ class AppDrawer extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('DYSONIC', style: theme.textTheme.h4),
-                  const SizedBox(height: 12),
-                  if (user.name != null && user.name!.isNotEmpty)
-                    Text(user.name!, style: theme.textTheme.large),
-                  Text(user.email, style: theme.textTheme.muted),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      UserAvatar(
+                        name: user.name ?? user.email,
+                        imageUrl: user.image,
+                        radius: 24,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (user.name != null && user.name!.isNotEmpty)
+                              Text(
+                                user.name!,
+                                style: theme.textTheme.large,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            Text(
+                              user.email,
+                              style: theme.textTheme.muted,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

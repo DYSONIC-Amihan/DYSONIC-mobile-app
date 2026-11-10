@@ -5,6 +5,6 @@ abstract final class AppRoutes {
   static const forgotPassword = '/forgot-password';
   static const account = '/account';
   static const settings = '/settings';
-
+  static const changePassword = '/account/password';
   static const authPages = {login, signUp, forgotPassword};
 }

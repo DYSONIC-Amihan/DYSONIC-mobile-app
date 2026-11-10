@@ -78,3 +78,12 @@ lib/
     │   └── index.dart                         Barrel file (exports the 3 screens)
     └── home/
         └── home_screen.dart                   Placeholder after login, with sign out
+
+
+### Formatting of Files for clean code.
+
+Run this command to clean your code and you won't be confused at reading them
+
+```bash
+dart format .
+```

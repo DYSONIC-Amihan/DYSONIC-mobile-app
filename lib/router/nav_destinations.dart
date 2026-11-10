@@ -24,11 +24,7 @@ class NavDestination {
 /// Add a new screen to the menu by adding one entry here
 /// (and a matching GoRoute in app_router.dart).
 const navDestinations = <NavDestination>[
-  NavDestination(
-    label: 'Home',
-    icon: LucideIcons.house,
-    route: AppRoutes.home,
-  ),
+  NavDestination(label: 'Home', icon: LucideIcons.house, route: AppRoutes.home),
   NavDestination(
     label: 'Account',
     icon: LucideIcons.user,
@@ -38,5 +34,10 @@ const navDestinations = <NavDestination>[
     label: 'Settings',
     icon: LucideIcons.settings,
     route: AppRoutes.settings,
+  ),
+  NavDestination(
+    label: 'Account',
+    icon: LucideIcons.user,
+    route: AppRoutes.account,
   ),
 ];

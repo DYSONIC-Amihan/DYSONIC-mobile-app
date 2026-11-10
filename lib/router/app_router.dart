@@ -29,12 +29,29 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: AppRoutes.home, builder: (_, _) => const HomeScreen()),
       GoRoute(path: AppRoutes.login, builder: (_, _) => const LoginScreen()),
       GoRoute(path: AppRoutes.signUp, builder: (_, _) => const SignUpScreen()),
-      GoRoute(path: AppRoutes.settings, builder: (_, _) => const SettingsScreen()),
+      GoRoute(
+        path: AppRoutes.settings,
+        builder: (_, _) => const SettingsScreen(),
+      ),
       GoRoute(
         path: AppRoutes.forgotPassword,
         builder: (_, _) => const ForgotPasswordScreen(),
       ),
-      GoRoute(path: AppRoutes.account, builder: (_, _) => const AccountScreen()),
+      GoRoute(
+        path: AppRoutes.account,
+        builder: (_, _) => const AccountScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.account,
+        builder: (_, _) => const AccountScreen(),
+        routes: [
+          // Resolves to AppRoutes.changePassword ('/account/password').
+          GoRoute(
+            path: 'password',
+            builder: (_, _) => const ChangePasswordScreen(),
+          ),
+        ],
+      ),
     ],
   );
 

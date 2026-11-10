@@ -32,7 +32,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     final form = _formKey.currentState!;
     if (!form.saveAndValidate()) return;
     final email = (form.value['email'] as String).trim();
-    final ok = await ref.read(signUpControllerProvider.notifier).signUp(
+    final ok = await ref
+        .read(signUpControllerProvider.notifier)
+        .signUp(
           name: (form.value['name'] as String).trim(),
           email: email,
           password: form.value['password'] as String,

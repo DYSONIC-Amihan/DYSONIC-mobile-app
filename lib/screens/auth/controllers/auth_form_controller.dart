@@ -46,7 +46,7 @@ abstract class AuthFormController extends Notifier<AuthFormState> {
 /// Shared by every screen that offers "Continue with Google".
 mixin GoogleSsoMixin on AuthFormController {
   Future<bool> signInWithGoogle() => runAction<AuthSession>(
-        () => ref.read(authRepositoryProvider).signInWithGoogle(),
-        onSuccess: ref.read(sessionProvider.notifier).setSession,
-      );
+    () => ref.read(authRepositoryProvider).signInWithGoogle(),
+    onSuccess: ref.read(sessionProvider.notifier).setSession,
+  );
 }

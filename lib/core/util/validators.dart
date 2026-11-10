@@ -26,4 +26,11 @@ abstract final class Validators {
       return null;
     };
   }
+
+  static String? name(String? value) {
+    final empty = required(value, 'Name');
+    if (empty != null) return empty;
+    if (value!.trim().length > 50) return 'Name must be 50 characters or less';
+    return null;
+  }
 }

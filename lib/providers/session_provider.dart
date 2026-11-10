@@ -9,11 +9,18 @@ class SessionNotifier extends Notifier<AuthSession?> {
 
   void setSession(AuthSession session) => state = session;
 
+  void updateUser(AuthUser user) {
+    final current = state;
+    if (current == null) return;
+    state = current.copyWith(user: user);
+  }
+
   Future<void> signOut() async {
     await ref.read(authRepositoryProvider).signOut();
     state = null;
   }
 }
 
-final sessionProvider =
-    NotifierProvider<SessionNotifier, AuthSession?>(SessionNotifier.new);
+final sessionProvider = NotifierProvider<SessionNotifier, AuthSession?>(
+  SessionNotifier.new,
+);

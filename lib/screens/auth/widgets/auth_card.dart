@@ -21,10 +21,7 @@ class AuthCard extends StatelessWidget {
       title: Text(title),
       description: Text(description),
       footer: footer,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 16),
-        child: child,
-      ),
+      child: Padding(padding: const EdgeInsets.only(top: 16), child: child),
     );
   }
 }

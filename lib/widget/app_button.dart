@@ -44,14 +44,22 @@ class AppButton extends StatelessWidget {
     );
 
     final button = switch (variant) {
-      AppButtonVariant.primary =>
-        ShadButton(onPressed: handler, child: content),
-      AppButtonVariant.secondary =>
-        ShadButton.secondary(onPressed: handler, child: content),
-      AppButtonVariant.outline =>
-        ShadButton.outline(onPressed: handler, child: content),
-      AppButtonVariant.ghost =>
-        ShadButton.ghost(onPressed: handler, child: content),
+      AppButtonVariant.primary => ShadButton(
+        onPressed: handler,
+        child: content,
+      ),
+      AppButtonVariant.secondary => ShadButton.secondary(
+        onPressed: handler,
+        child: content,
+      ),
+      AppButtonVariant.outline => ShadButton.outline(
+        onPressed: handler,
+        child: content,
+      ),
+      AppButtonVariant.ghost => ShadButton.ghost(
+        onPressed: handler,
+        child: content,
+      ),
     };
 
     return expand ? SizedBox(width: double.infinity, child: button) : button;
