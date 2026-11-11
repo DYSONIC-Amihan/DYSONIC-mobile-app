@@ -1,10 +1,10 @@
 enum UserRole {
-  admin(1, 'Administrator'),
-  normal(2, 'Member');
+  admin(1),
+  normal(2),
+  superadmin(3);
 
-  const UserRole(this.id, this.label);
+  const UserRole(this.id);
   final int id;
-  final String label;
 
   static UserRole? fromId(int? id) {
     for (final role in values) {
@@ -20,6 +20,8 @@ class AuthUser {
     required this.email,
     required this.role,
     this.name,
+    this.image,
+    this.createdAt,
     this.emailVerified = false,
   });
 
@@ -27,25 +29,36 @@ class AuthUser {
   final String email;
   final UserRole role;
   final String? name;
+  final String? image;
+  final DateTime? createdAt;
   final bool emailVerified;
 
-  /// Name if set, otherwise the email.
-  String get displayName {
-    final trimmed = name?.trim();
-    return (trimmed == null || trimmed.isEmpty) ? email : trimmed;
+  /// Returns null when the backend sends a role this app doesn't know.
+  static AuthUser? tryFromJson(Map<String, dynamic> json) {
+    final role = UserRole.fromId((json['roleId'] as num?)?.toInt());
+    if (role == null) return null;
+
+    final createdAt = json['createdAt'];
+    return AuthUser(
+      id: json['id'] as String,
+      email: json['email'] as String,
+      name: json['name'] as String?,
+      image: json['image'] as String?,
+      role: role,
+      emailVerified: json['emailVerified'] as bool? ?? false,
+      createdAt: createdAt is String ? DateTime.tryParse(createdAt) : null,
+    );
   }
 
-  /// Up to two uppercase initials, e.g. "Juan Dela Cruz" -> "JD".
-  String get initials {
-    final parts = displayName
-        .split(RegExp(r'\s+'))
-        .where((p) => p.isNotEmpty)
-        .toList();
-    if (parts.isEmpty) return '?';
-    final first = parts.first[0];
-    final last = parts.length > 1 ? parts.last[0] : '';
-    return (first + last).toUpperCase();
-  }
+  AuthUser copyWith({String? name, String? image}) => AuthUser(
+    id: id,
+    email: email,
+    role: role,
+    name: name ?? this.name,
+    image: image ?? this.image,
+    createdAt: createdAt,
+    emailVerified: emailVerified,
+  );
 }
 
 class AuthSession {
@@ -58,4 +71,10 @@ class AuthSession {
   final AuthUser user;
   final String accessToken;
   final String? refreshToken;
+
+  AuthSession copyWith({AuthUser? user}) => AuthSession(
+    user: user ?? this.user,
+    accessToken: accessToken,
+    refreshToken: refreshToken,
+  );
 }

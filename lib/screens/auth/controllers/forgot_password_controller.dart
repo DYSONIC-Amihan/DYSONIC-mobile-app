@@ -5,11 +5,11 @@ import 'auth_form_controller.dart';
 
 class ForgotPasswordController extends AuthFormController {
   Future<bool> sendResetLink(String email) => runAction<void>(
-        () => ref.read(authRepositoryProvider).sendPasswordReset(email: email),
-      );
+    () => ref.read(authRepositoryProvider).sendPasswordReset(email: email),
+  );
 }
 
 final forgotPasswordControllerProvider =
     NotifierProvider.autoDispose<ForgotPasswordController, AuthFormState>(
-  ForgotPasswordController.new,
-);
+      ForgotPasswordController.new,
+    );

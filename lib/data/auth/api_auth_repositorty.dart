@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../../core/failure.dart';
 import '../../core/token_storage.dart';
-import '../../core/dio_failure_mapper.dart';
+import '../../core/api_guard.dart';
 import '../../core/util/result.dart';
 import '../../services/auth_services.dart';
 import 'auth_repository.dart';
@@ -19,26 +19,26 @@ class ApiAuthRepository implements AuthRepository {
   Future<Result<AuthSession>> signInWithEmail({
     required String email,
     required String password,
-  }) =>
-      _signIn(
-        '/api/auth/sign-in/email',
-        {'email': email, 'password': password},
-      );
+  }) => _signIn('/api/auth/sign-in/email', {
+    'email': email,
+    'password': password,
+  });
 
   @override
-Future<Result<AuthSession>> signInWithGoogle() async {
-  try {
-    final idToken = await _google.getIdToken();
-    return await _signIn('/api/auth/sign-in/social', {
-      'provider': 'google',
-      'idToken': {'token': idToken},
-    });
-  } on Failure catch (f) {
-    return Err(f);
-  } catch (_) {
-    return const Err(ServerFailure());
+  Future<Result<AuthSession>> signInWithGoogle() async {
+    try {
+      final idToken = await _google.getIdToken();
+      return await _signIn('/api/auth/sign-in/social', {
+        'provider': 'google',
+        'idToken': {'token': idToken},
+      });
+    } on Failure catch (f) {
+      return Err(f);
+    } catch (_) {
+      return const Err(ServerFailure());
+    }
   }
-}
+
   /// Shared by email and Google sign-in: both return {user, token?} and the
   /// bearer plugin also sends the token in the `set-auth-token` header.
   Future<Result<AuthSession>> _signIn(
@@ -72,7 +72,7 @@ Future<Result<AuthSession>> signInWithGoogle() async {
         ),
       );
     } on DioException catch (e) {
-      return Err(_mapError(e));
+      return Err(mapDioError(e));
     } catch (_) {
       return const Err(ServerFailure());
     }
@@ -83,12 +83,11 @@ Future<Result<AuthSession>> signInWithGoogle() async {
     required String name,
     required String email,
     required String password,
-  }) =>
-      _post('/api/auth/sign-up/email', {
-        'name': name,
-        'email': email,
-        'password': password,
-      });
+  }) => _post('/api/auth/sign-up/email', {
+    'name': name,
+    'email': email,
+    'password': password,
+  });
 
   @override
   Future<Result<void>> resendVerificationEmail({required String email}) =>
@@ -113,11 +112,11 @@ Future<Result<AuthSession>> signInWithGoogle() async {
       await _dio.post<void>(path, data: data);
       return const Success(null);
     } on DioException catch (e) {
-      return Err(_mapError(e));
+      return Err(mapDioError(e));
     } catch (_) {
       return const Err(ServerFailure());
     }
   }
 
-  Failure _mapError(DioException e) => mapDioError(e);
+  Failure mapDioError(Exception e) => mapDioError(e);
 }

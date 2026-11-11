@@ -14,9 +14,11 @@ class SettingsStorage {
 
   AppSettings read() {
     return AppSettings(
-      themeMode: ThemeMode.values.asNameMap()[_prefs.getString(_themeModeKey)] ??
+      themeMode:
+          ThemeMode.values.asNameMap()[_prefs.getString(_themeModeKey)] ??
           ThemeMode.system,
-      palette: AppPalette.values.asNameMap()[_prefs.getString(_paletteKey)] ??
+      palette:
+          AppPalette.values.asNameMap()[_prefs.getString(_paletteKey)] ??
           AppPalette.standard,
     );
   }

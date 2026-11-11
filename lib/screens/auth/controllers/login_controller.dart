@@ -9,16 +9,15 @@ class LoginController extends AuthFormController with GoogleSsoMixin {
   Future<bool> signInWithEmail({
     required String email,
     required String password,
-  }) =>
-      runAction<AuthSession>(
-        () => ref
-            .read(authRepositoryProvider)
-            .signInWithEmail(email: email, password: password),
-        onSuccess: ref.read(sessionProvider.notifier).setSession,
-      );
+  }) => runAction<AuthSession>(
+    () => ref
+        .read(authRepositoryProvider)
+        .signInWithEmail(email: email, password: password),
+    onSuccess: ref.read(sessionProvider.notifier).setSession,
+  );
 }
 
 final loginControllerProvider =
     NotifierProvider.autoDispose<LoginController, AuthFormState>(
-  LoginController.new,
-);
+      LoginController.new,
+    );
