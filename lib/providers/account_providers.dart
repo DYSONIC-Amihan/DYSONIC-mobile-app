@@ -10,9 +10,7 @@ import 'session_provider.dart';
 
 final accountRepositoryProvider = Provider<AccountRepository>((ref) {
   if (Env.useMock) {
-    return MockAccountRepository(
-      readUser: () => ref.read(sessionProvider)?.user,
-    );
+    return MockAccountRepository(() => ref.read(sessionProvider)?.user);
   }
   return ApiAccountRepository(
     ref.watch(dioProvider),

@@ -8,6 +8,7 @@ class AppTextField extends StatelessWidget {
     required this.id,
     required this.label,
     this.placeholder,
+    this.initialValue,
     this.validator,
     this.onChanged,
     this.keyboardType,
@@ -21,6 +22,7 @@ class AppTextField extends StatelessWidget {
   final String id;
   final String label;
   final String? placeholder;
+  final String? initialValue;
   final String? Function(String value)? validator;
   final ValueChanged<String>? onChanged;
   final TextInputType? keyboardType;
@@ -36,6 +38,7 @@ class AppTextField extends StatelessWidget {
       id: id,
       label: Text(label),
       placeholder: placeholder == null ? null : Text(placeholder!),
+      initialValue: initialValue,
       validator: validator,
       onChanged: onChanged,
       keyboardType: keyboardType,

@@ -5,8 +5,7 @@ import 'account_repository.dart';
 import 'avatar_option.dart';
 
 class MockAccountRepository implements AccountRepository {
-  MockAccountRepository({required AuthUser? Function() readUser})
-    : _readUser = readUser;
+  MockAccountRepository(this._readUser);
 
   final AuthUser? Function() _readUser;
 

@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 
+import '../../core/api_guard.dart';
 import '../../core/failure.dart';
 import '../../core/token_storage.dart';
-import '../../core/api_guard.dart';
 import '../../core/util/result.dart';
 import '../../services/auth_services.dart';
 import 'auth_repository.dart';
@@ -48,29 +48,17 @@ class ApiAuthRepository implements AuthRepository {
     try {
       final res = await _dio.post<Map<String, dynamic>>(path, data: data);
       final body = res.data!;
-      final user = body['user'] as Map<String, dynamic>;
 
       final token =
           res.headers.value('set-auth-token') ?? body['token'] as String?;
       if (token == null) return const Err(ServerFailure());
 
-      final role = UserRole.fromId((user['roleId'] as num?)?.toInt());
-      if (role == null) return const Err(ForbiddenFailure());
+      final user = AuthUser.tryFromJson(body['user'] as Map<String, dynamic>);
+      if (user == null) return const Err(ForbiddenFailure());
 
       await _tokenStorage.save(accessToken: token);
 
-      return Success(
-        AuthSession(
-          user: AuthUser(
-            id: user['id'] as String,
-            email: user['email'] as String,
-            name: user['name'] as String?,
-            role: role,
-            emailVerified: user['emailVerified'] as bool? ?? false,
-          ),
-          accessToken: token,
-        ),
-      );
+      return Success(AuthSession(user: user, accessToken: token));
     } on DioException catch (e) {
       return Err(mapDioError(e));
     } catch (_) {
@@ -117,6 +105,4 @@ class ApiAuthRepository implements AuthRepository {
       return const Err(ServerFailure());
     }
   }
-
-  Failure mapDioError(Exception e) => mapDioError(e);
 }
