@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/api_client.dart';
 import '../core/env.dart';
 import '../core/token_storage.dart';
-import '../data/auth/api_auth_repositorty.dart';
+import '../data/auth/api_auth_repository.dart';
 import '../data/auth/auth_repository.dart';
 import '../data/auth/guarded_auth_repository.dart';
 import '../data/auth/mock_auth_repository.dart';

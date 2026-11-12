@@ -35,9 +35,4 @@ const navDestinations = <NavDestination>[
     icon: LucideIcons.settings,
     route: AppRoutes.settings,
   ),
-  NavDestination(
-    label: 'Account',
-    icon: LucideIcons.user,
-    route: AppRoutes.account,
-  ),
 ];

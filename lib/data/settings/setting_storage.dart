@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/app_settings.dart';
-import '../../theme/app_pallete.dart';
+import '../../theme/app_palette.dart';
 
 class SettingsStorage {
   const SettingsStorage(this._prefs);

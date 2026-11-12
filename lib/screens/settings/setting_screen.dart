@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../providers/setting_provider.dart';
-import '../../theme/app_pallete.dart';
+import '../../theme/app_palette.dart';
 import '../../widget/app_drawer.dart';
 
 class SettingsScreen extends ConsumerWidget {
