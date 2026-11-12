@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import 'app_pallete.dart';
+import 'app_palette.dart';
 
 abstract final class AppTheme {
   static ShadThemeData light(AppPalette palette) =>

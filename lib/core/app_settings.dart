@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_pallete.dart';
+import '../theme/app_palette.dart';
 
 @immutable
 class AppSettings {

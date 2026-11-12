@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/app_settings.dart';
 import '../data/settings/setting_storage.dart';
-import '../theme/app_pallete.dart';
+import '../theme/app_palette.dart';
 
 /// Overridden in main() with the loaded instance.
 final sharedPreferencesProvider = Provider<SharedPreferences>(
